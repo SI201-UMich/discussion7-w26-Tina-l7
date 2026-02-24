@@ -31,13 +31,29 @@ def load_listings(f):
     full_path = os.path.join(base_path, f)
 
     # TODO: Read the CSV using csv.reader and convert it to a list a dictionaries
-    pass
+    with open(full_path) as file:
+        reader = csv.reader(file)
+        header = next(reader)
+        print("header", header)  # Read the header row
+        listings = []
+        for row in reader:
+            row_dict = {}
+            for i, column_name in enumerate(header):
+                row_dict[column_name] = row[i]
+            listings.append(row_dict)
+    return listings
+
+#finsihed
+
 
 ###############################################################################
 ##### TASK 2: CALCULATION FUNCTION (single calculation)
 ###############################################################################
 def calculate_avg_price_by_neighbourhood_group_and_room(listings):
+
+
     """
+
     Calculate the average nightly price for each (neighbourhood_group, room_type) pair.
 
     Parameters:
@@ -51,9 +67,17 @@ def calculate_avg_price_by_neighbourhood_group_and_room(listings):
         dict mapping (neighbourhood_group, room_type) -> average_price (float)
         e.g. { ('Downtown', 'Entire home/apt'): 123.45, ... }
     """
-    pass
-
-
+    avg_prices = {}
+    for listing in listings:
+        key = (listing['neighbourhood_group'], listing['room_type'])
+        price = float(listing['price'])
+        if key not in avg_prices:
+            avg_prices[key] = []
+        avg_prices[key].append(price)
+    # Calculate the average
+    for key, prices in avg_prices.items():
+        avg_prices[key] = sum(prices) / len(prices)
+    return avg_prices
 
 ###############################################################################
 ##### TASK 3: CSV WRITER
