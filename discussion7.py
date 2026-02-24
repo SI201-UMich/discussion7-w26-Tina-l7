@@ -87,7 +87,7 @@ def calculate_avg_price_by_neighbourhood_group_and_room(listings):
     # Calculate the average
     avg_prices = {key: price_sums[key] / price_counts[key] for key in price_sums}
     return avg_prices
-#finsihed
+#finished
 ###############################################################################
 ##### TASK 3: CSV WRITER
 ###############################################################################
