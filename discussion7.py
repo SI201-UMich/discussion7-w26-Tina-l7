@@ -67,18 +67,27 @@ def calculate_avg_price_by_neighbourhood_group_and_room(listings):
         dict mapping (neighbourhood_group, room_type) -> average_price (float)
         e.g. { ('Downtown', 'Entire home/apt'): 123.45, ... }
     """
-    avg_prices = {}
-    for listing in listings:
-        key = (listing['neighbourhood_group'], listing['room_type'])
-        price = float(listing['price'])
-        if key not in avg_prices:
-            avg_prices[key] = []
-        avg_prices[key].append(price)
-    # Calculate the average
-    for key, prices in avg_prices.items():
-        avg_prices[key] = sum(prices) / len(prices)
-    return avg_prices
+    price_sums = {}
+    price_counts = {}
 
+    for listing in listings:
+        neighbourhood_group = listing['neighbourhood_group']
+        room_type = listing['room_type']
+        price = float(listing['price'])  # Convert price to float
+
+        key = (neighbourhood_group, room_type)
+
+        if key not in price_sums:
+            price_sums[key] = 0.0
+            price_counts[key] = 0
+
+        price_sums[key] += price
+        price_counts[key] += 1
+
+    # Calculate the average
+    avg_prices = {key: price_sums[key] / price_counts[key] for key in price_sums}
+    return avg_prices
+#finsihed
 ###############################################################################
 ##### TASK 3: CSV WRITER
 ###############################################################################
